@@ -1,0 +1,11 @@
+# Build Sphinx
+/build/
+/*.doctrees
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.env/
