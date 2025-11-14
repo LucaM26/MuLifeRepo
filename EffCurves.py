@@ -1,0 +1,107 @@
+import argparse 
+import matplotlib.pyplot as plt
+import numpy as np
+import glob
+import os
+
+"""_summary_
+
+The parser is a folder name, with files called PMT(number of PMT).txt. 
+
+In this file we will assume a familiar structure, which is the one the owner of this file used in the first place
+"""
+
+parser = argparse.ArgumentParser(description = "This program accepts a path to a folder, it estimates efficency and associated error, and plots efficency as a function of HV")
+
+parser.add_argument("folder", type = str, help = "Path.txt")
+
+args = parser.parse_args()
+
+folder = args.folder
+
+files = glob.glob(os.path.join(folder, "PMT*.txt"))
+
+def eff_curve(data, A = 1 , V_ind = 0, T_ind = 1, C_ind = 2, PMTu_ind = 3, PMTd_ind = 4):
+    
+    """_summary_
+    
+    The function estimates efficency as ratio between triples and couples, corrects with acceptance and uses single count to remove fake couples.
+    
+    Error is estimated from binomial stats, the users will recognize the variance of a binomial distribution
+    
+    Args:
+        data (ndarray) : is a data numpy array,here assumed by the following structure : HV/Triples/Couples/Singles of upper PMT/Singles of bottom PMT  
+        A (float, optional) : Acceptance, is a scale geometric factor for efficency. Defaults to 1.
+        V_ind (int, optional) : HV index. Defaults to 0.
+        T_ind (int, optional) : Triple index. Defaults to 1.
+        C_ind (int, optional) : Couples index. Defaults to 2.
+        PMTu_ind (int, optional) : Upper PMT singles index. Defaults to 3.
+        PMTd_ind (int, optional) : Bottom PMT singles index. Defaults to 4.
+
+    Returns:
+        eff(ndarray) : efficency estimated as explained above.
+        eff_err(ndarray) : efficency error estimated as explained above.
+        C_fake(ndarray) : fake couples estimated as product of singles divided by 100 s multiplied by 20 ns
+    """
+    
+    HV = data[:, V_ind] * 1e-3
+    
+    T = data[:, T_ind]
+    
+    C = data[:, C_ind]
+    
+    S_07 = data[:, PMTu_ind]
+    
+    S_02 = data[:, PMTd_ind]
+    
+    C_fake = S_07 * S_02 * 8e-10 
+    
+    eff = T/(A*(C-C_fake))
+    
+    eff_err = np.sqrt(eff * (1-eff)/ (C-C_fake))
+    
+    return HV, eff, eff_err, C_fake
+
+def plotting(x, y, y_err, titolo, format = '.', capsize = 3):
+    
+    """_summary_
+    
+    Plotting function, it basically just plots the efficency curve.
+    
+    Args:
+        x(ndarray) : array on x axis.
+        y(ndarray) : array on y axis. Must match x shape obv.
+        y_err(ndarray) : array of y_err. Must match y shape, that means it mst match x shape, obv.
+        titolo(str) : just a title for the plot, later assumed to be file name
+        format(str) : point format. '.' is the one I like the most :).
+        capsize(float) : selfexplainatory. 3 is the one I like the most :).
+
+    Returns:
+        fig(figure) : figure that represents the efficency curve.
+        ax(axis) : axis object of fig.
+    """
+
+    fig, ax = plt.subplots()
+    
+    ax.errorbar(x, y, y_err, fmt = format , capsize = capsize)
+    
+    ax.grid(True)
+    
+    ax.set_xlabel('HV [kV]')
+    
+    ax.set_ylabel('Efficency [Pure]')
+    
+    ax.set_title(titolo)
+    
+    return fig, ax
+
+A = {"PMT01": 1, "PMT02" : 0.4, "PMT04" : 1 , "PMT07" : 0.5 , "PMTOR" : 1}
+
+for f in files:
+    title = os.path.splitext(os.path.basename(f))[0]
+    HV, eff, err, C_fake = eff_curve(np.loadtxt(f), A[title])
+    fig, ax = plotting(HV, eff, err, title)
+    plt.savefig(title+"EffCurve")
+    plt.show()
+    
+    
