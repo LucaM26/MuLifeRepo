@@ -1,5 +1,5 @@
 # Build Sphinx
-/build/
+source/build/
 /*.doctrees
 
 # Python
