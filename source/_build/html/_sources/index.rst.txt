@@ -1,15 +1,11 @@
 .. MuLife documentation master file, created by
-<<<<<<< HEAD
    sphinx-quickstart on Fri Nov 14 19:21:42 2025.
-=======
-   sphinx-quickstart on Fri Nov 14 20:09:54 2025.
->>>>>>> 3864f96 (Salvataggio temporaneo prima del pull)
+
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 MuLife documentation
-====================
-
+================
 Add your content using ``reStructuredText`` syntax. See the
 `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
 documentation for details.

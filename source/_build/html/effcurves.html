@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; MuLife 0.1 documentation</title>
+    <title>EffCurves Module &#8212; MuLife 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
@@ -32,20 +32,64 @@
 
           <div class="body" role="main">
             
-  <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-EffCurves Module
-================
-=======
-“EffCurves Module
-=================
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; 3864f96 (Salvataggio temporaneo prima del pull)</p>
-<dl class="simple">
-<dt>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</dt><dd><dl class="field-list simple">
-<dt class="field-odd">show-inheritance<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
+  <section id="module-EffCurves">
+<span id="effcurves-module"></span><h1>EffCurves Module<a class="headerlink" href="#module-EffCurves" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="EffCurves.eff_curve">
+<span class="sig-prename descclassname"><span class="pre">EffCurves.</span></span><span class="sig-name descname"><span class="pre">eff_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_ind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_ind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_ind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PMTu_ind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PMTd_ind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EffCurves.eff_curve" title="Link to this definition">¶</a></dt>
+<dd><p>_summary_</p>
+<p>The function estimates efficency as ratio between triples and couples, corrects with acceptance and uses single count to remove fake couples.</p>
+<p>Error is estimated from binomial stats, the users will recognize the variance of a binomial distribution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>ndarray</em>) – is a data numpy array,here assumed by the following structure : HV/Triples/Couples/Singles of upper PMT/Singles of bottom PMT</p></li>
+<li><p><strong>A</strong> (<em>float</em><em>, </em><em>optional</em>) – Acceptance, is a scale geometric factor for efficency. Defaults to 1.</p></li>
+<li><p><strong>V_ind</strong> (<em>int</em><em>, </em><em>optional</em>) – HV index. Defaults to 0.</p></li>
+<li><p><strong>T_ind</strong> (<em>int</em><em>, </em><em>optional</em>) – Triple index. Defaults to 1.</p></li>
+<li><p><strong>C_ind</strong> (<em>int</em><em>, </em><em>optional</em>) – Couples index. Defaults to 2.</p></li>
+<li><p><strong>PMTu_ind</strong> (<em>int</em><em>, </em><em>optional</em>) – Upper PMT singles index. Defaults to 3.</p></li>
+<li><p><strong>PMTd_ind</strong> (<em>int</em><em>, </em><em>optional</em>) – Bottom PMT singles index. Defaults to 4.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>efficency estimated as explained above.
+eff_err(ndarray) : efficency error estimated as explained above.
+C_fake(ndarray) : fake couples estimated as product of singles divided by 100 s multiplied by 20 ns</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>eff(ndarray)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="EffCurves.plotting">
+<span class="sig-prename descclassname"><span class="pre">EffCurves.</span></span><span class="sig-name descname"><span class="pre">plotting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_err</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">titolo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EffCurves.plotting" title="Link to this definition">¶</a></dt>
+<dd><p>_summary_</p>
+<p>Plotting function, it basically just plots the efficency curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – array on x axis.</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – array on y axis. Must match x shape obv.</p></li>
+<li><p><strong>y_err</strong> (<em>ndarray</em>) – array of y_err. Must match y shape, that means it mst match x shape, obv.</p></li>
+<li><p><strong>titolo</strong> (<em>str</em>) – just a title for the plot, later assumed to be file name</p></li>
+<li><p><strong>format</strong> (<em>str</em>) – point format. ‘.’ is the one I like the most :).</p></li>
+<li><p><strong>capsize</strong> (<em>float</em>) – selfexplainatory. 3 is the one I like the most :).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>figure that represents the efficency curve.
+ax(axis) : axis object of fig.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fig(figure)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 
 
           </div>
@@ -73,6 +117,14 @@ EffCurves Module
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">EffCurves Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#EffCurves.eff_curve"><code class="docutils literal notranslate"><span class="pre">eff_curve()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#EffCurves.plotting"><code class="docutils literal notranslate"><span class="pre">plotting()</span></code></a></li>
+</ul>
+</li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
