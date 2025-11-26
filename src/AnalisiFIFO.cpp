@@ -3,11 +3,20 @@
 #include <vector>
 using namespace std;
 
-// Mu meanlife estimate
+/*
+*
+*Meant to be used as root macros.
+*DecayTime is an analysis program that basically does this : 
+*(1) Imports a file (specified by a path given as an input) assumed to have to columns, that will be converted in CHv (it corresponds to
+*the channel that was activated at a given time) and CLKv (the time in which the channel was triggered)
+*(2) Loops over CHv until it finds 1 (START signal): if so it increments index until it finds a 2(STOP signal), if the difference is more 
+*than 8 clock cycles, it is multiplied by a calibration constant (see Calibration) and registered in an histogram.
+*(3) The histogram is then plotted, the user can work with it with various root utilities
+*/
 
-int main() {
+void DecayTime(const char* path) {
 
-    ifstream FIFO("/home/luxnasin/FIFOread_Take3.txt");
+    ifstream FIFO(path);
 
     vector<double> CHv, CLKv;
 
@@ -67,15 +76,20 @@ int main() {
 
     h->Draw();
 
-    return 0;
-
 }
 
-// Calibration costant
+/*
+*Meant to be used as root macro.
+*I used this to estimate the calibration costant between physical time and clock cycles (it's the clock period). The workflow is the following:
+*(1) Import works as above (see DecayTime)
+*(2) Loops over CLKv, and calculates difference between two following clock fronts. It is saved inside an histogram.
+*(3) The histogram is then plotted. The user can then make usage of various root utilities on it.
+*(4) The calibration constant is estimated with reference period of the original signal measured in the Lab.
+*/
 
-int Calibration() {
+void Calibration(const char* path) {
 
-    ifstream FIFO("home/luxnasin/FIFOread_Cal2.txt");
+    ifstream FIFO(path);
 
     vector<double> CHv, CLKv;
 
@@ -133,15 +147,20 @@ int Calibration() {
 
     cout << a << "+/-" << a_err <<endl;
 
-    return 0;
-
 }
 
-// Delay estimate
+/*
+*This is a bit usesless, but still...
+*Meant to be used as root macro.
+*It estimates the delay between two (presumably) synchronous square waves. The workflow is the following:
+*(1) File import works as above (see DecayTime)
+*(2) Loop calculates time difference if the two following signals come from 2 different channels, then saves difference;
+*(3) The histogram is then plotted. The user can then make usage of various root utilities on it.
+*/
 
-int Delay() {
+void Delay(const char* path) {
 
-    ifstream FIFO("home/luxnasin/FIFOread_CalDoppia.txt");
+    ifstream FIFO(path);
 
     vector<double> CHv, CLKv;
 
@@ -179,7 +198,5 @@ int Delay() {
     delay->GetYaxis()->SetTitle("Counts [pure]");
 
     delay->Draw();
-
-    return 0;
 }
 

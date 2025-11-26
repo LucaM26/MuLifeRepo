@@ -13,8 +13,6 @@ The parser is a folder name, with files called PMT(number of PMT).txt.
 In this file we will assume a familiar structure, which is the one the owner of this file used in the first place
 """
 
-#Cazzoooooooooooooo
-
 
 def eff_curve(data, A = 1 , V_ind = 0, T_ind = 1, C_ind = 2, PMTu_ind = 3, PMTd_ind = 4):
     
